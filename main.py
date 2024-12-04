@@ -2,7 +2,7 @@ import serial
 import tkinter as tk
 
 # Serial port configuration
-SERIAL_PORT = "COM4"  # Replace with your Arduino's port
+SERIAL_PORT = "COM4"
 BAUD_RATE = 9600
 
 # Threshold distance (in cm)
