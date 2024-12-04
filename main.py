@@ -2,11 +2,11 @@ import serial
 import tkinter as tk
 
 # Serial port configuration
-SERIAL_PORT = "COM3"  # Replace with your Arduino's port
+SERIAL_PORT = "COM4"  # Replace with your Arduino's port
 BAUD_RATE = 9600
 
 # Threshold distance (in cm)
-THRESHOLD_DISTANCE = 10
+THRESHOLD_DISTANCE = 25
 
 # Create the Tkinter window
 root = tk.Tk()
@@ -47,7 +47,7 @@ def update_canvas():
         pass
 
     # Schedule the next update
-    root.after(50, update_canvas)
+    root.after(5, update_canvas)
 
 # Start the canvas update loop
 update_canvas()
