@@ -28,10 +28,10 @@ void loop() {
   long duration = pulseIn(echoPin, HIGH);
   int distance = duration * 0.034 / 2; // Convert to centimeters
 
-  // Print the distance to the serial monitor
-  Serial.print("Distance: ");
-  Serial.print(distance);
-  Serial.println(" cm");
+  // Send the distance to the serial monitor as a clean value
+  if (distance > 0) { // Ignore invalid readings
+    Serial.println(distance); // Send only the distance value
+  }
 
   // Check if the distance is below the threshold
   if (distance > 0 && distance <= thresholdDistance) {
