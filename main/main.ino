@@ -1,50 +1,50 @@
-// Define pins for the ultrasonic sensor and LED
-const int trigPin = 9;
-const int echoPin = 10;
-const int ledPin = 8;
+#include <Servo.h>
 
-// Define a threshold distance in centimeters
-const int thresholdDistance = 10;
+const int trigPin = 10;
+const int echoPin = 11;
+Servo servoMotor;  // Create Servo object
+
+long duration;
+int distance;
+int angle = 15;  // Starting angle for the servo
 
 void setup() {
-  // Initialize the serial monitor
-  Serial.begin(9600);
-
-  // Set pin modes
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+  servoMotor.attach(12);  // Servo motor connected to pin 9
 }
 
 void loop() {
-  // Send a 10-microsecond pulse to the TRIG pin
+  // Sweep the servo from 15 to 165 degrees and back
+  for (angle = 15; angle <= 165; angle++) {
+    servoMotor.write(angle);
+    delay(30);
+    distance = getDistance();  // Get the distance from ultrasonic sensor
+    Serial.print(angle);
+    Serial.print(",");
+    Serial.println(distance);  // Send data to Python
+  }
+  
+  // Sweep back from 165 to 15 degrees
+  for (angle = 165; angle >= 15; angle--) {
+    servoMotor.write(angle);
+    delay(30);
+    distance = getDistance();
+    Serial.print(angle);
+    Serial.print(",");
+    Serial.println(distance);
+  }
+}
+
+long getDistance() {
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
-
-  // Read the ECHO pin and calculate the distance
-  long duration = pulseIn(echoPin, HIGH);
-  int distance = duration * 0.034 / 2; // Convert to centimeters
-
-  // Send the distance to the serial monitor as a clean value
-  if (distance > 0) { // Ignore invalid readings
-    Serial.println(distance); // Send only the distance value
-  }
-
-  // Check if the distance is below the threshold
-  if (distance > 0 && distance <= thresholdDistance) {
-    // Flash the LED
-    digitalWrite(ledPin, HIGH);
-    delay(200);
-    digitalWrite(ledPin, LOW);
-    delay(200);
-  } else {
-    // Turn off the LED
-    digitalWrite(ledPin, LOW);
-  }
-
-  // Small delay before the next measurement
-  delay(100);
+  
+  duration = pulseIn(echoPin, HIGH);
+  distance = duration * 0.034 / 2;  // Calculate the distance in cm
+  return distance;
 }
