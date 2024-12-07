@@ -57,3 +57,5 @@ This project demonstrates the use of an ultrasonic sensor mounted on a servo mot
 - **Modular Design**: The distance calculation and visualization logic are modularized for scalability.
 
 ---
+
+readme made with AI assistance
